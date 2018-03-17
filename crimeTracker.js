@@ -1,3 +1,4 @@
+
   // Initialize Firebase
  var config = {
     apiKey: "AIzaSyC-awVmIVddxV7Waz0HxaiBt_TXQYJ6xlw",
@@ -82,3 +83,4 @@ google.maps.event.addDomListener(window, 'load', initMap);
   alert("Retrieved " + data.length + " records from the dataset!");
   console.log(data);
 });
+
