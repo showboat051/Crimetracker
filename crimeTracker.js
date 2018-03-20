@@ -1,3 +1,4 @@
+
   // Initialize Firebase
  var config = {
     apiKey: "AIzaSyC-awVmIVddxV7Waz0HxaiBt_TXQYJ6xlw",
@@ -29,3 +30,4 @@
   alert("Retrieved " + data.length + " records from the dataset!");
   console.log(data);
 });
+
