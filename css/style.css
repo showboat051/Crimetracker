@@ -1,5 +1,5 @@
 #twitter-timeline{
-    /* display: inline-block; */
+    display: inline-block;
     font-family: "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
     font-size: 12px;
     font-weight: bold;
@@ -12,7 +12,6 @@
     margin: 10px 5px;
     padding: 0 16px 16px 16px;
     max-width: 468px;
-    float: right;
  }
 
 .jumbotron {
@@ -22,6 +21,7 @@
 #map {
     height: 100%;
     width: 50%;
+    float: left;
   }
 html, body {
     height: 100%;
