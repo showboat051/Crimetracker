@@ -15,11 +15,8 @@
   //Google geolocation API
   $.ajax({
     url: "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBPv_oeAKVz-UvKJX8HbJfyemZrjwmQJCk",
-    method: "GET"
+    method: "POST"
   })
-//Map code 1
-// function initMap() {
-//     var location = new google.maps.LatLng(32.7791, 96.8003);
   
 
 //Google Maps Basic Map Function
@@ -59,7 +56,6 @@ function initMap() {
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
       }
-
 
 
   //Dallas open data
