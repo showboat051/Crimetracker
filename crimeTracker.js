@@ -10,6 +10,8 @@
   };
   firebase.initializeApp(config);
 
+  var database = firebase.database();
+
   //Google geolocation API
   $.ajax({
     url: "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBPv_oeAKVz-UvKJX8HbJfyemZrjwmQJCk",
@@ -18,57 +20,47 @@
 //Map code 1
 // function initMap() {
 //     var location = new google.maps.LatLng(32.7791, 96.8003);
+  
 
-//     var mapCanvas = document.getElementById("googleMap");
+//Google Maps Basic Map Function
+function initMap() {
+  // Create a map object and specify the DOM element for display.
+  var map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: 32.8412, lng: -96.7845 },
+      zoom: 10
+  });
+  infoWindow = new google.maps.InfoWindow;
 
-//     var mapOptions = {
-//         center: location,
-//         zoom: 16,
-//         panControl: false,
-//         mapTypeId: google.maps.MapTypeId.ROADMAP
-//     }
-//     var map = new google.maps.Map(mapCanvas, mapOptions);
-// }
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
 
-// google.maps.event.addDomListner(window, 'load', initMap);
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            infoWindow.open(map);
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }
 
-// var mapOptions = {
-//                 center: new google.maps.LatLng(28.1823294, -82.352912),
-//                 zoom: 9,
-//                 mapTypeId: google.maps.MapTypeId.HYBRID,
-//                 scrollwheel: false,
-//                 draggable: false,
-//                 panControl: true,
-//                 zoomControl: true,
-//                 mapTypeControl: true,
-//                 scaleControl: true,
-//                 streetViewControl: true,
-//                 overviewMapControl: true,
-//                 rotateControl: true,
-//             };
-// var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-        
-// google.maps.event.addDomListener(window, 'load', initialize);
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      }
 
-//second map code
-function initMap(){
-var mapOptions = {
-    center: new google.maps.LatLng(28.1823294, -82.352912),
-    zoom: 9,
-    mapTypeId: google.maps.MapTypeId.HYBRID,
-    scrollwheel: false,
-    draggable: false,
-    panControl: true,
-    zoomControl: true,
-    mapTypeControl: true,
-    scaleControl: true,
-    streetViewControl: true,
-    overviewMapControl: true,
-    rotateControl: true,
-};
-var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
-}
-google.maps.event.addDomListener(window, 'load', initMap);
+
 
   //Dallas open data
   $.ajax({
@@ -77,7 +69,7 @@ google.maps.event.addDomListener(window, 'load', initMap);
     data: {
       "$limit" : 5000,
       "$$app_token" : "wuP78c3lOV3O8eisU6WoBMfQ8P"
-    }
+    },
 }).done(function(data) {
   alert("Retrieved " + data.length + " records from the dataset!");
   console.log(data);
