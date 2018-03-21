@@ -22,8 +22,9 @@
 //Google Maps Basic Map Function
 function initMap() {
   // Create a map object and specify the DOM element for display.
+  var dallas = {lat: 32.7791, lng: -96.8003};
   var map = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: 32.8412, lng: -96.7845 },
+      center: dallas,
       zoom: 10
   });
   infoWindow = new google.maps.InfoWindow;
@@ -56,6 +57,44 @@ function initMap() {
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
       }
+
+        //This will be an array of markers, where we will feed in coords from the Dallas Open Data API
+        var markers = {};
+
+        addMarker({
+            coords:{lat:38.8403, lng:-97.6114},
+            iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            //this content will be overwrittten by the if() statement in the addMarker function
+            content:'<h1>test/h1>'
+            });
+
+        function addMarker(carts){
+            var marker = new google.maps.Marker({
+            position:carts.coords,
+            map: map,
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 8
+            }
+            });
+
+            //check for custom icon to prevent undefined
+            if(carts.iconImage){
+                marker.setIcon(carts.iconImage);
+            }
+
+            //check content to prevent undefined
+            if(carts.content){
+                var infoWindow = new google.maps.InfoWindow({
+                    //here, we will have to feed in two fields from the Dallas Open Data API
+                    content:'<h2>Title</h2><br><h3>address</h3>'
+                });
+
+                marker.addListener('click', function(){
+                    infoWindow.open(map, marker);
+                });
+            }
+        }
 
 
   //Dallas open data
