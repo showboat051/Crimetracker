@@ -1,0 +1,81 @@
+<html>
+    <head>
+            
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<style>
+    #map{
+    height:400px;
+    width:100%
+    }
+</style>
+    </head>
+    <body>
+
+            <div id="map"></div>
+    <script>
+      function initMap() {
+        var dallas = {lat: 32.7791, lng: -96.8003};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: dallas
+        });
+        // var marker = new google.maps.Marker({
+        //   position: dallas,
+        //   map: map
+        // });
+        
+        //This will be an array of markers, where I will feed in coords from the Dallas Open Data API
+        var markers = {};
+        
+        addMarker({
+            coords:{lat:38.8403, lng:-97.6114},
+            iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            //this content will be overwrittten by the if() statement in the addMarker function
+            content:'<h1>test/h1>'
+            });
+
+        function addMarker(carts){
+            var marker = new google.maps.Marker({
+            position:carts.coords,
+            map: map,
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 8
+            }
+            });
+
+            //check for custom icon to prevent undefined
+            if(carts.iconImage){
+                marker.setIcon(carts.iconImage);
+            }
+
+            //check content to prevent undefined
+            if(carts.content){
+                var infoWindow = new google.maps.InfoWindow({
+                    //here, we will have to feed in two fields from the Dallas Open Data API
+                    content:'<h2>Title</h2><br><h3>address</h3>'
+                });
+
+                marker.addListener('click', function(){
+                    infoWindow.open(map, marker);
+                });
+            }
+        }
+
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwhkvL2dJY_FLAU9-uXU699gewI5jty4g&callback=initMap">
+    </script>
+            
+    </body>
+</html>
