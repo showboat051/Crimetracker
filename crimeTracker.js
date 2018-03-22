@@ -18,6 +18,7 @@
     method: "POST"
   })
   
+  console.log(config);
 
 //Google Maps Basic Map Function
 function initMap() {
