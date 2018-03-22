@@ -50,17 +50,8 @@
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
           }
-        }
 
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
-
-
-      //BEGIN MAP MARKERS
+          //BEGIN MAP MARKERS
       /*Quick notes:
       1. This is intended to create pins on the street addresses of crimes.
       2. We will need to use the Google GeoLocate API to convert addresses into coords, then feed those into the {position} object
@@ -106,6 +97,18 @@
             }
         }
         //END MAP MARKERS
+
+        }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+
+
+      
 
       };
 
