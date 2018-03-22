@@ -1,4 +1,4 @@
-$(document).ready(function(){
+
 
   // Initialize Firebase
   var config = {
@@ -58,7 +58,7 @@ $(document).ready(function(){
                               'Error: The Geolocation service failed.' :
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
-      }
+
 
       //BEGIN MAP MARKERS
       /*Quick notes:
@@ -67,8 +67,10 @@ $(document).ready(function(){
       3. The {content} object is a little popup modal onClick(marker). I think we could put the Description and Address of the crimes
       */
         //This will be an array of markers, where we will feed in coords from the Dallas Open Data API
-        var markers = {};
 
+        var openData = "https://www.dallasopendata.com/api/views/tbnj-w5hb/rows.json?accessType=DOWNLOAD"
+        var markers = {};
+        var address;
         addMarker({
             coords:{lat:38.8403, lng:-97.6114},
             iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
@@ -105,13 +107,16 @@ $(document).ready(function(){
         }
         //END MAP MARKERS
 
+      };
+
+
   //Dallas open data
   $.ajax({
     url: "https://www.dallasopendata.com/resource/are8-xahz.json",
     type: "GET",
     data: {
       "$limit" : 5000,
-      "$$app_token" : "wuP78c3lOV3O8eisU6WoBMfQ8P"
+      "$$app_token" : "wuP78c3lOV3O8eisU6WoBMfQ8"
     },
 }).done(function(data) {
   alert("Retrieved " + data.length + " records from the dataset!");
@@ -138,6 +143,5 @@ $(document).ready(function(){
           };
       });
   }
-)}
-);
+)
 
