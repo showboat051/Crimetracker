@@ -1,5 +1,3 @@
-// $(document).ready(function(){
-
   // Initialize Firebase
   var config = {
       apiKey: "AIzaSyC-awVmIVddxV7Waz0HxaiBt_TXQYJ6xlw",
@@ -19,6 +17,7 @@
       method: "POST"
     })
   
+  console.log(config);
 
   //Google Maps Basic Map Function
   function initMap() {
@@ -57,7 +56,7 @@
                               'Error: The Geolocation service failed.' :
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
-      }
+
 
       //BEGIN MAP MARKERS
       /*Quick notes:
@@ -66,43 +65,48 @@
       3. The {content} object is a little popup modal onClick(marker). I think we could put the Description and Address of the crimes
       */
         //This will be an array of markers, where we will feed in coords from the Dallas Open Data API
-        // var markers = {};
 
-        // addMarker({
-        //     coords:{lat:38.8403, lng:-97.6114},
-        //     iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-        //     //this content will be overwrittten by the if() statement in the addMarker function
-        //     content:'<h1>test/h1>'
-        //     });
+        var openData = "https://www.dallasopendata.com/api/views/tbnj-w5hb/rows.json?accessType=DOWNLOAD"
+        var markers = {};
+        var address;
+        addMarker({
+            coords:{lat:38.8403, lng:-97.6114},
+            iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            //this content will be overwrittten by the if() statement in the addMarker function
+            content:'<h1>test/h1>'
+            });
 
-        // function addMarker(carts){
-        //     var marker = new google.maps.Marker({
-        //     position:carts.coords,
-        //     map: map,
-        //     icon: {
-        //         path: google.maps.SymbolPath.CIRCLE,
-        //         scale: 8
-        //     }
-        //     });
+        function addMarker(carts){
+            var marker = new google.maps.Marker({
+            position:carts.coords,
+            map: map,
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 8
+            }
+            });
 
-        //     //check for custom icon to prevent undefined
-        //     if(carts.iconImage){
-        //         marker.setIcon(carts.iconImage);
-        //     }
+            //check for custom icon to prevent undefined
+            if(carts.iconImage){
+                marker.setIcon(carts.iconImage);
+            }
 
-        //     //check content to prevent undefined
-        //     if(carts.content){
-        //         var infoWindow = new google.maps.InfoWindow({
-        //             //here, we will have to feed in two fields from the Dallas Open Data API
-        //             content:'<h2>Title</h2><br><h3>address</h3>'
-        //         });
+            //check content to prevent undefined
+            if(carts.content){
+                var infoWindow = new google.maps.InfoWindow({
+                    //here, we will have to feed in two fields from the Dallas Open Data API
+                    content:'<h2>Title</h2><br><h3>address</h3>'
+                });
 
-        //         marker.addListener('click', function(){
-        //             infoWindow.open(map, marker);
-        //         });
-        //     }
-        // }
+                marker.addListener('click', function(){
+                    infoWindow.open(map, marker);
+                });
+            }
+        }
         //END MAP MARKERS
+
+      };
+
 
   //Dallas open data
   $.ajax({
@@ -120,23 +124,23 @@
 //   $(document).on("click", ".submit", function(query){
 //       var queryURL = "https://www.dallasopendata.com/api/views/vkty-8qkv/rows.json?accessType=DOWNLOAD"
       
-//       //so we need to iterate through 389 types of crimes and get the 9th index for the description of the crime. they are nested arrays.
-//       //I think there is a different API fieldname that will make it easier to categorize than the Description.
-//       $.ajax({
-//           url: queryURL,
-//           //url not assigned yet
-//           method: "GET"
 
-//       }).then(function(response){
-//           var dataObject = response.data;
-//           // var data;
-//           for(i = 0; i < dataObject.length; i++){
-//               var crimeResult = response.data[i]
-//               console.log(crimeResult[8]);
-//               // console.log(response);
-//           };
-//       });
-//   }
-// )}
-// );
+      //so we need to iterate through 389 types of crimes and get the 9th index for the description of the crime. they are nested arrays.
+      //I think there is a different API fieldname that will make it easier to categorize than the Description.
+      $.ajax({
+          url: queryURL,
+          //url not assigned yet
+          method: "GET"
+
+      }).then(function(response){
+          var dataObject = response.data;
+          // var data;
+          for(i = 0; i < dataObject.length; i++){
+              var crimeResult = response.data[i]
+              console.log(crimeResult[8]);
+              // console.log(response);
+          };
+      });
+  }
+)
 
