@@ -1,5 +1,3 @@
-
-
   // Initialize Firebase
   var config = {
       apiKey: "AIzaSyC-awVmIVddxV7Waz0HxaiBt_TXQYJ6xlw",
@@ -126,9 +124,10 @@
   console.log(data);
 });
 
-  $(document).on("click", ".submit", function(query){
-      var queryURL = "https://www.dallasopendata.com/api/views/vkty-8qkv/rows.json?accessType=DOWNLOAD"
+//   $(document).on("click", ".submit", function(query){
+//       var queryURL = "https://www.dallasopendata.com/api/views/vkty-8qkv/rows.json?accessType=DOWNLOAD"
       
+
       //so we need to iterate through 389 types of crimes and get the 9th index for the description of the crime. they are nested arrays.
       //I think there is a different API fieldname that will make it easier to categorize than the Description.
       $.ajax({
