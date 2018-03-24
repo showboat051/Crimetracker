@@ -11,10 +11,31 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
     margin: 10px 5px;
     padding: 0 16px 16px 16px;
-    max-width: 468px;
+    width: 28%;
     float: right;
  }
+ /*Subtley alerts the user that they've entered an invalid ZIP code*/
+ input:invalid {
+    border:1px solid red;
+  }
+
+/*I don't think this looks very good as a static width*/
+#zipcode {
+    width:180px;
+    text-align:center;
+}
 
 .jumbotron {
     text-align: center;
 }
+
+#map {
+    height: 100%;
+    width: 50%;
+    float: left;
+  }
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
