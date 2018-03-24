@@ -1,133 +1,183 @@
-$(document).ready(function(){
+/*
+3/24, What I'm working on now, I need to find the right endpoint. I think I need date1, addres, pointx, pointy API fieldnames. If there is no pointx and pointy, then use the addresss.
+I need to then use that to feed into the speech bubble modal. 
+Next, I have the firebase stuff coded properly, but I don't think I'm giving it the right path, so once I fix that it should work as intended. 
 
+I've given up on trying to categorize the data. It seems like what's easier is to just plot all crimes in the vicinity of a certain point.
+*/ 
 
   // Initialize Firebase
- var config = {
-  apiKey: "AIzaSyC-awVmIVddxV7Waz0HxaiBt_TXQYJ6xlw",
-  authDomain: "crimetracker-1521301503240.firebaseapp.com",
-  databaseURL: "https://crimetracker-1521301503240.firebaseio.com",
-  projectId: "crimetracker-1521301503240",
-  storageBucket: "",
-  messagingSenderId: "648921276790"
-};
+  var config = {
+      apiKey: "AIzaSyC-awVmIVddxV7Waz0HxaiBt_TXQYJ6xlw",
+      authDomain: "crimetracker-1521301503240.firebaseapp.com",
+      databaseURL: "https://crimetracker-1521301503240.firebaseio.com",
+      projectId: "crimetracker-1521301503240",
+      storageBucket: "",
+      messagingSenderId: "648921276790"
+    };
+    firebase.initializeApp(config);
 
-firebase.initializeApp(config);
+    var database = firebase.database();
 
-//getlocation
-$("#getLocation").onclick = function() {
-  var startPos;
-  var nudge = document.getElementById("nudge");
-
-  var showNudgeBanner = function() {
-    nudge.style.display = "block";
-  };
-
-  var hideNudgeBanner = function() {
-    nudge.style.display = "none";
-  };
-
-  var nudgeTimeoutId = setTimeout(showNudgeBanner, 5000);
-
-  var geoSuccess = function(position) {
-    hideNudgeBanner();
-    // We have the location, don't display banner
-    clearTimeout(nudgeTimeoutId);
-
-    // Do magic with location
-    startPos = position;
-    document.getElementById('startLat').innerHTML = startPos.coords.latitude;
-    document.getElementById('startLon').innerHTML = startPos.coords.longitude;
-  };
-  var geoError = function(error) {
-    switch(error.code) {
-      case error.TIMEOUT:
-        // The user didn't accept the callout
-        showNudgeBanner();
-        break;
-    }
-  };
-
-  navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
-};
-//end get location
+    //database log initial values
+    var zipSearch = "";
+    var category = "";
 
 
-});
-  //Google geolocation API
-//   $.ajax({
-//     url: "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBPv_oeAKVz-UvKJX8HbJfyemZrjwmQJCk",
-//     method: "GET"
-//   })
+    //Log location and crime category search to Firebase
+    $(document).on('click', "#search", function queryData(interestedPerson, ZIPcode, category){
+      //prevents refreshing page
+      event.preventDefault();
 
-//Map code 1
-// function initMap() {
-//     var location = new google.maps.LatLng(32.7791, 96.8003);
+      zipSearch = $("#zipcode").val().trim();
+      category = $("#categories").val();
 
-//     var mapCanvas = document.getElementById("googleMap");
+      var interestedPerson = zipSearch + category;
 
-//     var mapOptions = {
-//         center: location,
-//         zoom: 16,
-//         panControl: false,
-//         mapTypeId: google.maps.MapTypeId.ROADMAP
-//     }
-//     var map = new google.maps.Map(mapCanvas, mapOptions);
-// }
+        firebase.database().ref('/' + interestedPerson).set({
+          ZIPcode: zipSearch,
+          category: category,
+          time: firebase.database.ServerValue.TIMESTAMP
+        });
 
-// google.maps.event.addDomListner(window, 'load', initMap);
+      });
 
-// var mapOptions = {
-//                 center: new google.maps.LatLng(28.1823294, -82.352912),
-//                 zoom: 9,
-//                 mapTypeId: google.maps.MapTypeId.HYBRID,
-//                 scrollwheel: false,
-//                 draggable: false,
-//                 panControl: true,
-//                 zoomControl: true,
-//                 mapTypeControl: true,
-//                 scaleControl: true,
-//                 streetViewControl: true,
-//                 overviewMapControl: true,
-//                 rotateControl: true,
-//             };
-// var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-        
-// google.maps.event.addDomListener(window, 'load', initialize);
-
-//second map code
-//Get location from button
-
-
-function initMap(){
-var mapOptions = {
-    center: new google.maps.LatLng(28.1823294, -82.352912),
-    zoom: 9,
-    mapTypeId: google.maps.MapTypeId.HYBRID,
-    scrollwheel: false,
-    draggable: false,
-    panControl: true,
-    zoomControl: true,
-    mapTypeControl: true,
-    scaleControl: true,
-    streetViewControl: true,
-    overviewMapControl: true,
-    rotateControl: true,
-};
-var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
-}
-google.maps.event.addDomListener(window, 'load', initMap);
-
-
-  //Dallas open data
+      //Dallas open data
   $.ajax({
     url: "https://www.dallasopendata.com/resource/are8-xahz.json",
     type: "GET",
     data: {
       "$limit" : 5000,
-      "$$app_token" : "wuP78c3lOV3O8eisU6WoBMfQ8P"
-    }
+      "$$app_token" : "wuP78c3lOV3O8eisU6WoBMfQ8"
+    },
 }).done(function(data) {
-  alert("Retrieved " + data.length + " records from the dataset!");
+  // alert("Retrieved " + data.length + " records from the dataset!");
   console.log(data);
 });
+
+    //Google geolocation API
+    $.ajax({
+      url: "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBPv_oeAKVz-UvKJX8HbJfyemZrjwmQJCk",
+      method: "POST"
+    });
+  
+  console.log(config);
+
+  //Google Maps Basic Map Function
+  function initMap() {
+    // Create a map object and specify the DOM element for display.
+    var dallas = {lat: 32.7791, lng: -96.8003};
+    var map = new google.maps.Map(document.getElementById('map'), {
+        center: dallas,
+        zoom: 10
+    });
+    infoWindow = new google.maps.InfoWindow;
+
+          // Try HTML5 geolocation.
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+
+              infoWindow.setPosition(pos);
+              infoWindow.setContent('Location found.');
+              infoWindow.open(map);
+              map.setCenter(pos);
+            }, function() {
+              handleLocationError(true, infoWindow, map.getCenter());
+            });
+          } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+          }
+
+          //BEGIN MAP MARKERS
+      /*Quick notes:
+      1. This is intended to create pins on the street addresses of crimes.
+      2. We will need to use the Google GeoLocate API to convert addresses into coords, then feed those into the {position} object
+      3. The {content} object is a little popup modal onClick(marker). I think we could put the Description and Address of the crimes
+      */
+        //This will be an array of markers, where we will feed in coords from the Dallas Open Data API
+
+        var openData = "https://www.dallasopendata.com/resource/qqc2-eivj.json"
+        var markers = {};
+        var address;
+        addMarker({
+            coords:{lat:38.8403, lng:-97.6114},
+            iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            //this content will be overwrittten by the if() statement in the addMarker function
+            content:'<h1>test/h1>'
+            });
+
+        function addMarker(carts){
+            var address = 
+            var marker = new google.maps.Marker({
+            position:carts.coords,
+            map: map,
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 8
+            }
+            });
+
+            //check for custom icon to prevent undefined
+            if(carts.iconImage){
+                marker.setIcon(carts.iconImage);
+            }
+
+            //check content to prevent undefined
+            if(carts.content){
+                var infoWindow = new google.maps.InfoWindow({
+                  
+                    //here, we will have to feed in two fields from the Dallas Open Data API
+                    content:'<h2>Title</h2><br><h3>address</h3>'
+                });
+
+                marker.addListener('click', function(){
+                    infoWindow.open(map, marker);
+                });
+            }
+        }
+        //END MAP MARKERS
+
+        }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+
+
+      
+
+      };
+
+
+  
+
+  // $(document).on("click", ".submit", function(query){
+      // var queryURL = "https://www.dallasopendata.com/api/views/vkty-8qkv/rows.json?accessType=DOWNLOAD"
+      
+      //so we need to iterate through 389 types of crimes and get the 9th index for the description of the crime. they are nested arrays.
+      //I think there is a different API fieldname that will make it easier to categorize than the Description.
+      // $.ajax({
+          // url: queryURL,
+          //url not assigned yet
+          // method: "GET"
+
+      // }).then(function(response){
+          // var dataObject = response.data;
+          // var data;
+          // for(i = 0; i < dataObject.length; i++){
+              // var crimeResult = response.data[i]
+              // console.log(crimeResult[8]);
+              // console.log(response);
+          // };
+      // });
+  // }
+// )
 
