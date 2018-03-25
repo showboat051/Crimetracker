@@ -69,8 +69,10 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 3. The {content} object is a little popup modal onClick(marker). I think we could put the Description and Address of the crimes
 */
 //This will be an array of markers, where we will feed in coords from the Dallas Open Data API
-// var markers = {};
+// var openData = "https://www.dallasopendata.com/api/views/tbnj-w5hb/rows.json?accessType=DOWNLOAD"
 
+// var markers = {};
+// var address;
 // addMarker({
 //     coords:{lat:38.8403, lng:-97.6114},
 //     iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
@@ -153,4 +155,6 @@ data: {
 }).fail(function (err) { console.log(err); 
 
 });
+
+//need to add on click for location
 
