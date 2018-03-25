@@ -109,13 +109,15 @@ $(document).ready(function () {
 	}
 	//END MAP MARKERS
 
+	// Click function for the dropdown menu
+	
 	//Dallas open data
 	$.ajax({
 		url: "https://www.dallasopendata.com/resource/are8-xahz.json",
 		type: "GET",
 		data: {
 			"$limit": 5000,
-			"$$app_token": "wuP78c3lOV3O8eisU6WoBMfQ8P"
+			"$$app_token": "wuP78c3lOV3O8eisU6WoBMfQ8"
 		},
 	}).done(function (data) {
 		alert("Retrieved " + data.length + " records from the dataset!");
