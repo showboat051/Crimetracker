@@ -14,53 +14,76 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 //Google geolocation API
-$.ajax({
-  url: "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBPv_oeAKVz-UvKJX8HbJfyemZrjwmQJCk",
-  method: "POST"
-})
+// $.ajax({
+//   url: "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBPv_oeAKVz-UvKJX8HbJfyemZrjwmQJCk",
+//   method: "POST"
+// })
+
+//Learn More on-click
 
 
 //Google Maps Basic Map Function
 function initMap() {
   // Create a map object and specify the DOM element for display.
-  var dallas = { lat: 32.7791, lng: -96.8003 };
+  var dallas = {lat: 32.7791, lng: -96.8003};
   var map = new google.maps.Map(document.getElementById('map'), {
     center: dallas,
     zoom: 10
   });
-  // var input = document.getElementById("search")    
-  // var searchBox = new google.maps.places.SearchBox((input));
 
-  infoWindow = new google.maps.InfoWindow;
+  var geocoder = new google.maps.Geocoder();
+ 
+  document.getElementById('submit').addEventListener('click', function() {
+    geocodeAddress(geocoder, map);
+  });
+}
 
-  // Try HTML5 geolocation.
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      var pos = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-
-      infoWindow.setPosition(pos);
-      infoWindow.setContent('Location found.');
-      infoWindow.open(map);
-      map.setCenter(pos);
-    }, function () {
-      handleLocationError(true, infoWindow, map.getCenter());
+  function geocodeAddress(geocoder, resultsMap) {
+    var address = document.getElementById('address').value;
+    geocoder.geocode({'address': address}, function(results, status) {
+     if (status === 'OK') {
+       resultsMap.setCenter(results[0].geometry.location);
+       var marker = new google.maps.Marker({
+         map: resultsMap,
+         position: results[0].geometry.location
+       });
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+       }
     });
-  } else {
-    // Browser doesn't support Geolocation
-    handleLocationError(false, infoWindow, map.getCenter());
   }
-}
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-  infoWindow.setPosition(pos);
-  infoWindow.setContent(browserHasGeolocation ?
-    'Error: The Geolocation service failed.' :
-    'Error: Your browser doesn\'t support geolocation.');
-  infoWindow.open(map);
-}
+//   infoWindow = new google.maps.InfoWindow;
+
+//   // Try HTML5 geolocation.
+//   if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(function (position) {
+//       var pos = {
+//         lat: position.coords.latitude,
+//         lng: position.coords.longitude
+//       };
+
+//       infoWindow.setPosition(pos);
+//       infoWindow.setContent('Location found.');
+//       infoWindow.open(map);
+//       map.setCenter(pos);
+//     }, function () {
+//       handleLocationError(true, infoWindow, map.getCenter());
+//     });
+//   } else {
+//     // Browser doesn't support Geolocation
+//     handleLocationError(false, infoWindow, map.getCenter());
+//   }
+// }
+
+// function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+//   infoWindow.setPosition(pos);
+//   infoWindow.setContent(browserHasGeolocation ?
+//     'Error: The Geolocation service failed.' :
+//     'Error: Your browser doesn\'t support geolocation.');
+//   infoWindow.open(map);
+// }
+
 
 //BEGIN MAP MARKERS
 /*Quick notes:
@@ -109,22 +132,6 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 // }
 //END MAP MARKERS
 
-//Creating additional rows for table for data
-// var createRow = function(data) {
-//   var tBody = $("tbody");
-//   var tRow = $("<tr>");
-//   // var dateTd = $("<td>").text(data.date_time);
-//   // var crimeTd = $("<td").text(data.nature_of_call);
-//   // var locationTd = $("<td>").text(data.block.location);
-//   console.log(dateTd);
-//   console.log(crimeTd);
-//   console.log(locationTd);
-
-// //   //Append table data to table row
-//   tRow.append(dateTd, crimeTd, locationTd);
-//   tBody.append(tRow);
-// };
-//
 
 //Dallas open data
 
@@ -134,27 +141,31 @@ data: {
   "$$app_token": "wuP78c3lOV3O8eisU6WoBMfQ8" 
   }, 
 }).done(function(data) { 
-  alert("Retrieved " + data.length + " records from the dataset!"); 
+  console.log("Retrieved " + data.length + " records from the dataset!"); 
   console.log(data); 
 
   for(i = 0; i< data.length; i++) {
     var street = data[i].location;
     if (data[i].block) {
       var block = data[i].block;
-      var address = block + " " + street;
+      var address = block + " " + street +" " +"Dallas, TX";
     } else {
-      var address = street;
+      var address = street + " "+"Dallas, TX";
     }
 
   var newDiv = $("<tr>").html("<td>" + data[i].date_time + "</td>"+ "<td>"+ data[i].nature_of_call + "</td>" + "<td>" + address + "</td>");
-  
-  $(".table-hover").append(newDiv)
-
+  var tBody = $("tbody")
+  tBody.append(newDiv);
+  $(".table-hover").append(tBody)
  
   }
-}).fail(function (err) { console.log(err); 
-
+}).fail(function (err) { 
+  console.log(err); 
 });
 
-//need to add on click for location
-
+//When user clicks td the location should upload to the map
+// $("<td>").click(function()
+// {
+//   $("address").text("address");
+//  geocodeAddress()
+// });
