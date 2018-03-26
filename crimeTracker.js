@@ -13,6 +13,27 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
+//database log initial values
+var zipSearch = "";
+var category = "";
+
+
+//Log location and crime category search to Firebase
+$(document).on('click', "#search", function queryData(QueryData, ZIPcode, time){
+  //prevents refreshing page
+  event.preventDefault();
+
+  var firebaseServer = "https://crimetracker-1521301503240.firebaseio.com/"
+
+  zipSearch = $("#address").val().trim();
+
+    firebase.database().ref().push({
+      ZIPcode: zipSearch,
+      time: firebase.database.ServerValue.TIMESTAMP
+    });
+
+  });
+
 //Google geolocation API
 // $.ajax({
 //   url: "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBPv_oeAKVz-UvKJX8HbJfyemZrjwmQJCk",
