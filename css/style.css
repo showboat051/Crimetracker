@@ -6,7 +6,17 @@
   
 
 .jumbotron {
-    text-align: center;
+    text-align: left;
+    background-image: url("../img/dallas_skyline.png");
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+#titleText {
+    font-size:85px;
+    color: black;
+    text-decoration: underline overline #428bca;
 }
 
 #map {

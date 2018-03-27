@@ -184,6 +184,12 @@ data: {
   console.log(err); 
 });
 
+// Back to Top Button at bottom of page
+$("a[href='#top']").click(function() {
+  $("html, body").animate({ scrollTop: 0 }, "slow");
+  return false;
+});
+
 //When user clicks td the location should upload to the map
 // $("<td>").click(function()
 // {
