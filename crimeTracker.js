@@ -1,4 +1,3 @@
-// $(document).ready(function(){
 
 // Initialize Firebase
 var config = {
@@ -34,15 +33,6 @@ $(document).on('click', "#search", function queryData(QueryData, ZIPcode, time){
 
   });
 
-//Google geolocation API
-// $.ajax({
-//   url: "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBPv_oeAKVz-UvKJX8HbJfyemZrjwmQJCk",
-//   method: "POST"
-// })
-
-//Learn More on-click
-
-
 //Google Maps Basic Map Function
 function initMap() {
   // Create a map object and specify the DOM element for display.
@@ -74,6 +64,7 @@ function initMap() {
     });
   }
 
+// Geolocation  
 //   infoWindow = new google.maps.InfoWindow;
 
 //   // Try HTML5 geolocation.
@@ -104,55 +95,6 @@ function initMap() {
 //     'Error: Your browser doesn\'t support geolocation.');
 //   infoWindow.open(map);
 // }
-
-
-//BEGIN MAP MARKERS
-/*Quick notes:
-1. This is intended to create pins on the street addresses of crimes.
-2. We will need to use the Google GeoLocate API to convert addresses into coords, then feed those into the {position} object
-3. The {content} object is a little popup modal onClick(marker). I think we could put the Description and Address of the crimes
-*/
-//This will be an array of markers, where we will feed in coords from the Dallas Open Data API
-// var openData = "https://www.dallasopendata.com/api/views/tbnj-w5hb/rows.json?accessType=DOWNLOAD"
-
-// var markers = {};
-// var address;
-// addMarker({
-//     coords:{lat:38.8403, lng:-97.6114},
-//     iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-//     //this content will be overwrittten by the if() statement in the addMarker function
-//     content:'<h1>test/h1>'
-//     });
-
-// function addMarker(carts){
-//     var marker = new google.maps.Marker({
-//     position:carts.coords,
-//     map: map,
-//     icon: {
-//         path: google.maps.SymbolPath.CIRCLE,
-//         scale: 8
-//     }
-//     });
-
-//     //check for custom icon to prevent undefined
-//     if(carts.iconImage){
-//         marker.setIcon(carts.iconImage);
-//     }
-
-//     //check content to prevent undefined
-//     if(carts.content){
-//         var infoWindow = new google.maps.InfoWindow({
-//             //here, we will have to feed in two fields from the Dallas Open Data API
-//             content:'<h2>Title</h2><br><h3>address</h3>'
-//         });
-
-//         marker.addListener('click', function(){
-//             infoWindow.open(map, marker);
-//         });
-//     }
-// }
-//END MAP MARKERS
-
 
 //Dallas open data
 
